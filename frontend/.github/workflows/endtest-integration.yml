@@ -1,0 +1,40 @@
+on: 
+  push: # Trigger the workflow on a push event
+    branches:
+      - main # Monitor the 'main' branch
+
+name: Endtest Integration
+
+jobs:
+  test:
+    name: Endtest Functional Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3 # Checkout your repository
+
+      - name: Run Endtest Functional Tests
+        id: endtest_functional_tests
+        uses: endtest-technologies/github-run-tests-action@v1.8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Repository token
+        with:
+          app_id: 72358749 # Your Endtest App ID
+          app_code: 87653085 # Your Endtest App Code
+          api_request: "https://app.endtest.io/api.php?action=runWeb&appId=72358749&appCode=87653085&suite=123456&platform=windows&os=windows10&browser=chrome&browserVersion=latest"
+          number_of_loops: 10 # Adjust as necessary
+
+      - name: Use Outputs from Test Execution
+        run: |
+          echo "Test Suite Name: ${{ steps.endtest_functional_tests.outputs.test_suite_name }}"
+          echo "Configuration: ${{ steps.endtest_functional_tests.outputs.configuration }}"
+          echo "Test Cases: ${{ steps.endtest_functional_tests.outputs.test_cases }}"
+          echo "Passed: ${{ steps.endtest_functional_tests.outputs.passed }}"
+          echo "Failed: ${{ steps.endtest_functional_tests.outputs.failed }}"
+          echo "Errors: ${{ steps.endtest_functional_tests.outputs.errors }}"
+          echo "Start Time: ${{ steps.endtest_functional_tests.outputs.start_time }}"
+          echo "End Time: ${{ steps.endtest_functional_tests.outputs.end_time }}"
+          echo "Detailed Logs: ${{ steps.endtest_functional_tests.outputs.detailed_logs }}"
+          echo "Screenshots and Video: ${{ steps.endtest_functional_tests.outputs.screenshots_and_video }}"
+          echo "Hash: ${{ steps.endtest_functional_tests.outputs.hash }}"
+          echo "Results: ${{ steps.endtest_functional_tests.outputs.results }}"
