@@ -1,7 +1,7 @@
-on: 
-  push: # Trigger the workflow on a push event
+on:
+  push:
     branches:
-      - main # Monitor the 'main' branch
+      - main
 
 name: Endtest Integration
 
@@ -9,21 +9,21 @@ jobs:
   test:
     name: Endtest Functional Test
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3 # Checkout your repository
+        uses: actions/checkout@v3
 
       - name: Run Endtest Functional Tests
         id: endtest_functional_tests
         uses: endtest-technologies/github-run-tests-action@v1.8
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Repository token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          app_id: 72358749 # Your Endtest App ID
-          app_code: 87653085 # Your Endtest App Code
-          api_request: "https://app.endtest.io/api.php?action=runWeb&appId=72358749&appCode=87653085&suite=1886914&platform=windows&os=windows10&browser=chrome&browserVersion=latest&resolution=1280x1024&geolocation=sanfrancisco&cases=20577375,20577376&notes="
-
-          number_of_loops: 10 # Adjust as necessary
+          app_id: 72358749
+          app_code: 87653085
+          api_request: "https://app.endtest.io/api.php?action=runWeb&appId=72358749&appCode=87653085&suite=1886914&platform=windows&os=windows10&browser=chrome&browserVersion=latest&resolution=1280x1024&geolocation=sanfrancisco&cases=20577375,20577376&notes=Test%20Run%20from%20GitHub"
+          number_of_loops: 10
 
       - name: Use Outputs from Test Execution
         run: |
